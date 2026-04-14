@@ -1,4 +1,5 @@
 const { AppError } = require('../../shared/errors/AppError');
+const { requiredWorkerHeaders } = require('../../domain/trabajadores/trabajador.mapper');
 
 function normalizeHeader(value) {
   return String(value || '')
@@ -31,6 +32,15 @@ class SheetsGateway {
     }
 
     const headers = rows[0].map(normalizeHeader);
+    const missingHeaders = requiredWorkerHeaders.filter((header) => !headers.includes(header));
+    if (missingHeaders.length) {
+      throw new AppError(
+        'BAD_REQUEST',
+        'La hoja Trabajadores no coincide con el formato de Cotizaciones.xlsx. Faltan columnas: ' + missingHeaders.join(', '),
+        400
+      );
+    }
+
     const records = rows.slice(1).map((row, index) => {
       const data = {};
       headers.forEach((header, colIndex) => {

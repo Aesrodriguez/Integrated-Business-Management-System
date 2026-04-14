@@ -7,7 +7,10 @@ class TrabajadorService {
 
   async list({ estado }) {
     const { records, cached } = await this.repository.findAll();
-    const filtered = estado ? records.filter((item) => item.estado === estado) : records;
+    const filterEstado = estado ? String(estado).trim().toLowerCase() : '';
+    const filtered = filterEstado
+      ? records.filter((item) => String(item.estado || '').toLowerCase() === filterEstado)
+      : records;
     return {
       data: filtered.map(({ rowNumber, ...rest }) => rest),
       meta: {
