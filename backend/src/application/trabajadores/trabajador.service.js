@@ -1,4 +1,4 @@
-const { AppError } = require('../../shared/errors/AppError');
+const { AppError } = require("../../shared/errors/AppError");
 
 class TrabajadorService {
   constructor({ repository }) {
@@ -7,23 +7,25 @@ class TrabajadorService {
 
   async list({ estado }) {
     const { records, cached } = await this.repository.findAll();
-    const filterEstado = estado ? String(estado).trim().toLowerCase() : '';
+    const filterEstado = estado ? String(estado).trim().toLowerCase() : "";
     const filtered = filterEstado
-      ? records.filter((item) => String(item.estado || '').toLowerCase() === filterEstado)
+      ? records.filter(
+          (item) => String(item.estado || "").toLowerCase() === filterEstado,
+        )
       : records;
     return {
       data: filtered.map(({ rowNumber, ...rest }) => rest),
       meta: {
         total: filtered.length,
-        cached
-      }
+        cached,
+      },
     };
   }
 
   async getById(id) {
     const entity = await this.repository.findById(id);
     if (!entity) {
-      throw new AppError('NOT_FOUND', 'Trabajador no encontrado', 404);
+      throw new AppError("NOT_FOUND", "Trabajador no encontrado", 404);
     }
 
     const { rowNumber, ...clean } = entity;
@@ -41,7 +43,7 @@ class TrabajadorService {
   }
 
   async remove(id) {
-    return this.update(id, { estado: 'inactivo' });
+    return this.update(id, { estado: "inactivo" });
   }
 }
 
