@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f1115">
+  <title>Triple A | Frontend refactor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="js/config.js"></script>
+  <script defer src="js/state.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/ui.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <div class="app-shell" id="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <div class="brand">
+        <div class="brand__mark">A</div>
+        <div>
+          <div class="brand__name">Triple A</div>
+          <div class="brand__meta">Frontend refactor</div>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav-main">
+        <button class="nav__item is-active" data-view="dashboard" type="button">Dashboard</button>
+        <button class="nav__item" data-view="nueva" type="button">Nueva cotización</button>
+        <button class="nav__item" data-view="lista" type="button">Cotizaciones</button>
+        <button class="nav__item" data-view="clientes" type="button">Clientes</button>
+        <button class="nav__item" data-view="items" type="button">Catálogo</button>
+        <button class="nav__item" data-view="trabajadores" type="button">Trabajadores</button>
+        <button class="nav__item" data-view="contratos" type="button">Contratos</button>
+      </nav>
+
+      <footer class="sidebar__footer">
+        <span>UI modular</span>
+        <span class="sidebar__footer-dot">•</span>
+        <span>Arquitectura limpia</span>
+      </footer>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Sistema de cotizaciones</p>
+          <h1 class="topbar__title" id="view-title">Dashboard</h1>
+        </div>
+        <div class="topbar__actions">
+          <button class="btn btn--ghost" type="button" data-action="toggle-sidebar">Menú</button>
+          <button class="btn btn--ghost" type="button" data-action="toggle-theme">Tema</button>
+          <button class="btn btn--primary" type="button" data-action="refresh">Actualizar</button>
+        </div>
+      </header>
+
+      <section class="status-bar" id="status-bar" aria-live="polite">
+        <span class="status-pill">Listo para conectar con Apps Script</span>
+      </section>
+
+      <section class="view is-active" data-view-panel="dashboard">
+        <div class="grid grid--metrics" id="dashboard-metrics"></div>
+        <div class="grid grid--two">
+          <article class="card card--panel">
+            <header class="card__header">
+              <h2>Resumen por estado</h2>
+              <span class="card__hint">Carga diferida</span>
+            </header>
+            <div class="table-wrap" id="dashboard-status-table"></div>
+          </article>
+          <article class="card card--panel">
+            <header class="card__header">
+              <h2>Contratos con mayor saldo</h2>
+              <span class="card__hint">Optimizado</span>
+            </header>
+            <div class="table-wrap" id="dashboard-contracts-table"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" data-view-panel="nueva">
+        <article class="card">
+          <header class="card__header"><h2>Nueva cotización</h2><span class="card__hint">Plantilla modular</span></header>
+          <div class="empty-state">Esta vista se conecta a los módulos existentes de captura.</div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="lista">
+        <article class="card">
+          <header class="card__header"><h2>Cotizaciones</h2><span class="card__hint">Carga bajo demanda</span></header>
+          <div id="list-view"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="clientes">
+        <article class="card">
+          <header class="card__header"><h2>Clientes</h2><span class="card__hint">Componente reutilizable</span></header>
+          <div id="clients-view"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="items">
+        <article class="card">
+          <header class="card__header"><h2>Catálogo</h2><span class="card__hint">Estructura jerárquica</span></header>
+          <div id="catalog-view"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="trabajadores">
+        <article class="card">
+          <header class="card__header"><h2>Trabajadores</h2><span class="card__hint">Petición optimizada</span></header>
+          <div id="workers-view"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="contratos">
+        <article class="card">
+          <header class="card__header"><h2>Contratos</h2><span class="card__hint">REST-ready</span></header>
+          <div id="contracts-view"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="loader" id="loader" hidden>
+    <div class="loader__panel">
+      <div class="loader__spinner"></div>
+      <p id="loader-text">Cargando...</p>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
