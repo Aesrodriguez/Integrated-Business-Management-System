@@ -65,21 +65,29 @@
   }
 
   function callRest(method, payload) {
-    var baseUrl = config.getApiBaseUrl();
-    if (!baseUrl) {
-      return Promise.reject(new Error('API REST no configurada. Define API_URL o TRIPLEA_API_BASE_URL.'));
-    }
-
-    var url = baseUrl.replace(/\/$/, '') + '/api/v1/' + method;
+    var url = '/api/proxy';
     var request = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload || {})
+      body: JSON.stringify({
+        method: method,
+        payload: payload || {}
+      })
     };
 
     return fetchWithTimeout(url, request, config.requestTimeoutMs || 15000).then(function (response) {
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      return response.json();
+      return response.json().catch(function () { return null; }).then(function (json) {
+        if (!response.ok) {
+          var errorMessage = (json && (json.error || json.message)) ? (json.error || json.message) : ('HTTP ' + response.status);
+          throw new Error(errorMessage);
+        }
+        return json;
+      });
+    }).then(function (result) {
+      if (result && result.ok && Object.prototype.hasOwnProperty.call(result, 'data')) {
+        return result.data;
+      }
+      return result;
     });
   }
 

@@ -13,6 +13,7 @@ La descripción completa del proceso de traslado de vistas, validación local, s
 - Define `API_URL` con la URL pública de Render.
 - `TRIPLEA_API_BASE_URL` sigue soportada como alias, pero `API_URL` es el nombre recomendado.
 - El frontend carga `/api/runtime-config.js` para exponer `API_URL` al navegador en tiempo de ejecución.
+- Las llamadas REST pasan por `/api/proxy`, por lo que debes definir también `BASIC_AUTH_USER` y `BASIC_AUTH_PASS` en Vercel.
 
 ## Objetivos
 
