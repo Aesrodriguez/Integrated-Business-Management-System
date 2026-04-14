@@ -76,7 +76,7 @@ button {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: clamp(14px, 2.5vh, 24px);
   overflow: hidden;
 }
 
@@ -125,8 +125,9 @@ button {
 .start-screen__panel {
   position: relative;
   z-index: 1;
-  width: min(480px, 100%);
-  padding: 44px 40px 36px;
+  width: min(450px, 100%);
+  max-height: calc(100vh - 32px);
+  padding: 32px 30px 26px;
   border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(21, 25, 34, 0.82);
@@ -136,6 +137,7 @@ button {
     0 0 0 1px rgba(124, 92, 255, 0.12),
     0 24px 64px rgba(0, 0, 0, 0.48),
     0 2px 8px rgba(124, 92, 255, 0.1);
+  overflow-y: auto;
   animation: panelReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -154,7 +156,7 @@ button {
   border-radius: 16px;
   background: linear-gradient(135deg, var(--accent), #4f7cff);
   box-shadow: 0 8px 24px rgba(124, 92, 255, 0.45);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .start-screen__logo-mark {
   font-family: var(--font-mono);
@@ -166,7 +168,7 @@ button {
 
 /* Header */
 .start-screen__header {
-  margin-bottom: 32px;
+  margin-bottom: 22px;
 }
 .start-screen__eyebrow {
   margin: 0 0 10px;
@@ -179,7 +181,7 @@ button {
 }
 .start-screen__title {
   margin: 0 0 12px;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(1.55rem, 2.6vw, 2.15rem);
   line-height: 1.1;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -187,8 +189,8 @@ button {
 .start-screen__text {
   margin: 0;
   color: var(--text-muted);
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.88rem;
+  line-height: 1.5;
   max-width: 42ch;
 }
 
@@ -196,7 +198,7 @@ button {
 .start-screen__form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 /* Campo individual */
@@ -439,7 +441,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 28px;
+  margin-top: 18px;
   color: var(--text-soft);
   font-size: 0.75rem;
   font-family: var(--font-mono);
@@ -988,6 +990,41 @@ body.theme-light .start-screen__input-wrap input:focus {
   }
 
   .start-screen__panel {
-    padding: 28px 20px 24px;
+    width: min(420px, 100%);
+    max-height: calc(100vh - 20px);
+    padding: 24px 18px 20px;
+    border-radius: 22px;
+  }
+
+  .start-screen__title {
+    margin-bottom: 8px;
+    font-size: clamp(1.4rem, 7vw, 1.75rem);
+  }
+
+  .start-screen__footer {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+}
+
+@media (max-height: 760px) {
+  .start-screen {
+    align-items: start;
+  }
+
+  .start-screen__panel {
+    margin-top: 10px;
+    max-height: calc(100vh - 20px);
+    padding: 22px 18px 18px;
+  }
+
+  .start-screen__logo {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 14px;
+  }
+
+  .start-screen__header {
+    margin-bottom: 14px;
   }
 }
