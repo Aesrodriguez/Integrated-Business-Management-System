@@ -43,6 +43,19 @@ Todos los endpoints de `/api/v1/*` usan autenticación Basic.
 - En producción se fuerza HTTPS y se limita el número de peticiones por IP.
 - Cada respuesta lleva `X-Request-Id` para auditoría y trazabilidad.
 
+## Despliegue en Render
+
+Para el backend desplegado en Render, conviene definir estas variables:
+
+- `NODE_ENV=production`
+- `FORCE_HTTPS=true`
+- `TRUST_PROXY=true`
+- `CORS_ALLOWED_ORIGINS=<url-del-frontend>`
+- `BASIC_AUTH_PASSWORD_HASH=<hash-pbkdf2>`
+- `GOOGLE_PRIVATE_KEY` con saltos de línea escapados como `\n`
+
+Si usas `BASIC_AUTH_PASS` solo debe ser temporal durante la migración.
+
 ## Pruebas locales
 
 - Levanta el backend con `npm run dev`.
