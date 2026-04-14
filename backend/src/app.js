@@ -4,6 +4,10 @@ const morgan = require('morgan');
 
 const env = require('./config/env');
 const { basicAuth } = require('./shared/security/basicAuth');
+const { buildCorsMiddleware } = require('./shared/security/cors');
+const { createRateLimiter } = require('./shared/security/rateLimit');
+const { requestIdMiddleware } = require('./shared/security/requestId');
+const { enforceHttpsMiddleware } = require('./shared/security/https');
 const { notFoundHandler, errorHandler } = require('./shared/errors/errorHandler');
 const { createGoogleSheetsClient } = require('./infrastructure/google/googleClient');
 const { SheetsGateway } = require('./infrastructure/google/sheetsGateway');
@@ -17,10 +21,18 @@ const { buildDocsRouter } = require('./presentation/docs.routes');
 
 function buildApp() {
   const app = express();
+  app.disable('x-powered-by');
+  app.set('trust proxy', env.trustProxy ? 1 : false);
 
-  app.use(helmet());
-  app.use(express.json({ limit: '1mb' }));
-  app.use(morgan('dev'));
+  app.use(requestIdMiddleware);
+  app.use(helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false
+  }));
+  app.use(buildCorsMiddleware(env.corsAllowedOrigins));
+  app.use(enforceHttpsMiddleware(env.forceHttps));
+  app.use(express.json({ limit: '750kb' }));
+  app.use(morgan(':date[iso] :method :url :status :res[content-length] - :response-time ms req=:req[x-request-id]'));
 
   const sheetsClient = createGoogleSheetsClient({
     clientEmail: env.googleClientEmail,
@@ -41,7 +53,25 @@ function buildApp() {
   app.use('/health', buildHealthRouter());
   app.use('/docs', buildDocsRouter());
 
-  const auth = basicAuth({ user: env.basicAuthUser, pass: env.basicAuthPass });
+  const authLimiter = createRateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 25,
+    message: 'Demasiados intentos de autenticación'
+  });
+  const apiLimiter = createRateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 120,
+    message: 'Demasiadas solicitudes a la API'
+  });
+
+  const auth = basicAuth({
+    user: env.basicAuthUser,
+    pass: env.basicAuthPass,
+    passwordHash: env.basicAuthPasswordHash
+  });
+
+  app.use('/api/v1', apiLimiter);
+  app.use('/api/v1', authLimiter);
   app.use('/api/v1', auth);
   app.use('/api/v1/trabajadores', buildTrabajadorRouter({ controller }));
 

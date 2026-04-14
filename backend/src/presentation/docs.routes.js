@@ -10,7 +10,14 @@ function buildDocsRouter() {
         version: 'v1',
         auth: {
           type: 'Basic',
-          header: 'Authorization: Basic <base64(user:pass)>'
+          header: 'Authorization: Basic <base64(user:pass)>',
+          transport: 'HTTPS obligatorio',
+          storage: 'Se recomienda BASIC_AUTH_PASSWORD_HASH con PBKDF2-SHA256'
+        },
+        security: {
+          cors: 'Allowlist configurable por CORS_ALLOWED_ORIGINS',
+          rateLimit: 'Límites por IP en /api/v1 y autenticación',
+          headers: 'Helmet + X-Request-Id'
         },
         endpoints: [
           { method: 'GET', path: '/health', description: 'Estado del servicio', authRequired: false },
@@ -24,7 +31,8 @@ function buildDocsRouter() {
           normalization: 'Encabezados de Sheets se normalizan para desacoplar el orden de columnas.',
           cleanArchitecture: 'Separacion estricta de rutas, controladores, negocio y repositorios.',
           scalability: 'Cache TTL e invalidacion tras escrituras para optimizar cuotas y latencia.',
-          dataValidation: 'Zod en capa de presentacion para validar contratos de entrada.'
+          dataValidation: 'Zod en capa de presentacion para validar contratos de entrada.',
+          authHardening: 'Credenciales con hash PBKDF2 y verificación en tiempo constante.'
         }
       }
     });
