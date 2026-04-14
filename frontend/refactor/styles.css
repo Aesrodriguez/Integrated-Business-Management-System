@@ -104,6 +104,32 @@ button {
   max-width: 52ch;
 }
 
+.start-screen__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.start-screen__field {
+  display: grid;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.start-screen__field input {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+
+.start-screen__field input::placeholder {
+  color: var(--text-soft);
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
@@ -544,5 +570,9 @@ button {
 
   .start-screen__panel {
     padding: 28px 22px;
+  }
+
+  .start-screen__form {
+    grid-template-columns: 1fr;
   }
 }

@@ -30,10 +30,15 @@ module.exports = async function handler(req, res) {
   var url = baseUrl.replace(/\/$/, '') + '/api/v1/' + method;
   var headers = { 'Content-Type': 'application/json' };
 
-  var user = process.env.BASIC_AUTH_USER || '';
-  var pass = process.env.BASIC_AUTH_PASS || '';
-  if (user && pass) {
-    headers.Authorization = 'Basic ' + Buffer.from(user + ':' + pass).toString('base64');
+  var clientBasicAuth = String(req.headers['x-basic-auth'] || '').trim();
+  if (clientBasicAuth && /^Basic\s+/i.test(clientBasicAuth)) {
+    headers.Authorization = clientBasicAuth;
+  } else {
+    var user = process.env.BASIC_AUTH_USER || '';
+    var pass = process.env.BASIC_AUTH_PASS || '';
+    if (user && pass) {
+      headers.Authorization = 'Basic ' + Buffer.from(user + ':' + pass).toString('base64');
+    }
   }
 
   try {

@@ -9,6 +9,7 @@
   var hasStarted = false;
   var bootLoaderTimer = null;
   var bootFailSafeTimer = null;
+  var authStorageKey = 'triplea.auth';
 
   function cancelBootLoader() {
     if (bootLoaderTimer) {
@@ -105,8 +106,63 @@
     });
   }
 
+  function showStartScreen() {
+    var startScreen = document.getElementById('start-screen');
+    var appShell = document.getElementById('app-shell');
+    if (startScreen) startScreen.hidden = false;
+    if (appShell) appShell.hidden = true;
+    hasStarted = false;
+  }
+
+  function saveAuth(user, pass) {
+    try {
+      global.sessionStorage.setItem(authStorageKey, JSON.stringify({ user: user, pass: pass }));
+    } catch (_error) { }
+  }
+
+  function loadSavedAuth() {
+    try {
+      var raw = global.sessionStorage.getItem(authStorageKey);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function applyAuthFromInputs() {
+    var userNode = document.getElementById('start-auth-user');
+    var passNode = document.getElementById('start-auth-pass');
+    var user = userNode ? userNode.value.trim() : '';
+    var pass = passNode ? passNode.value : '';
+
+    if (!user && !pass) {
+      var saved = loadSavedAuth();
+      if (saved && saved.user && saved.pass) {
+        api.setBasicCredentials(saved.user, saved.pass);
+        return true;
+      }
+      api.setBasicCredentials('', '');
+      return true;
+    }
+
+    if (!user || !pass) {
+      ui.toast('Faltan datos', 'Debes diligenciar usuario y contraseña.', 'warn');
+      return false;
+    }
+
+    api.setBasicCredentials(user, pass);
+    saveAuth(user, pass);
+    return true;
+  }
+
   function startApp() {
     if (hasStarted) return;
+
+    if (!applyAuthFromInputs()) {
+      return;
+    }
+
     hasStarted = true;
 
     var startScreen = document.getElementById('start-screen');
@@ -152,6 +208,11 @@
       cancelBootLoader();
       ui.setStatus('Arranque incompleto', 'error');
       ui.toast('Error inicial', error.message, 'error');
+
+      var msg = String(error && error.message ? error.message : '');
+      if (msg.indexOf('401') >= 0 || /autentic|credencial/i.test(msg)) {
+        showStartScreen();
+      }
     });
   }
 
@@ -161,6 +222,15 @@
     initTheme();
     restoreSidebar();
     ui.showView('dashboard');
+
+    var saved = loadSavedAuth();
+    if (saved) {
+      var userNode = document.getElementById('start-auth-user');
+      var passNode = document.getElementById('start-auth-pass');
+      if (userNode && saved.user) userNode.value = saved.user;
+      if (passNode && saved.pass) passNode.value = saved.pass;
+      api.setBasicCredentials(saved.user || '', saved.pass || '');
+    }
 
     var autoStart = false;
     try {

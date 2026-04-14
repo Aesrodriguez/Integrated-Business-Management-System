@@ -28,6 +28,16 @@
       <p class="start-screen__text">
         Inicia desde esta portada y luego entra al panel principal.
       </p>
+      <form class="start-screen__form" id="start-login-form" autocomplete="on">
+        <label class="start-screen__field">
+          <span>Usuario</span>
+          <input id="start-auth-user" name="auth-user" type="text" autocomplete="username" placeholder="BASIC_AUTH_USER" />
+        </label>
+        <label class="start-screen__field">
+          <span>Contraseña</span>
+          <input id="start-auth-pass" name="auth-pass" type="password" autocomplete="current-password" placeholder="BASIC_AUTH_PASS" />
+        </label>
+      </form>
       <button class="btn btn--primary" type="button" data-action="start-app">Entrar al sistema</button>
     </div>
   </section>

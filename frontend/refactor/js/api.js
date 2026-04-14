@@ -6,6 +6,7 @@
   var store = root.store;
   var cache = Object.create(null);
   var inflight = Object.create(null);
+  var runtimeBasicAuthHeader = '';
 
   function canUseAppsScript() {
     return config.useAppsScriptRuntime();
@@ -80,9 +81,14 @@
 
   function callRest(method, payload) {
     var url = '/api/proxy';
+    var headers = { 'Content-Type': 'application/json' };
+    if (runtimeBasicAuthHeader) {
+      headers['X-Basic-Auth'] = runtimeBasicAuthHeader;
+    }
+
     var request = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: headers,
       body: JSON.stringify({
         method: method,
         payload: payload || {}
@@ -181,11 +187,24 @@
     return Promise.resolve(null);
   }
 
+  function setBasicCredentials(user, pass) {
+    var cleanUser = String(user || '').trim();
+    var cleanPass = String(pass || '');
+    if (!cleanUser || !cleanPass) {
+      runtimeBasicAuthHeader = '';
+      return false;
+    }
+
+    runtimeBasicAuthHeader = 'Basic ' + global.btoa(cleanUser + ':' + cleanPass);
+    return true;
+  }
+
   root.api = {
     request: request,
     invalidate: invalidate,
     loadInitialData: loadInitialData,
     loadDashboardData: loadDashboardData,
-    loadViewData: loadViewData
+    loadViewData: loadViewData,
+    setBasicCredentials: setBasicCredentials
   };
 })(window);
