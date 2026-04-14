@@ -24,24 +24,109 @@
 
 <body>
   <section class="start-screen" id="start-screen" aria-label="Inicio de plataforma">
+    <div class="start-screen__bg-grid" aria-hidden="true"></div>
+    <div class="start-screen__glow start-screen__glow--1" aria-hidden="true"></div>
+    <div class="start-screen__glow start-screen__glow--2" aria-hidden="true"></div>
+
     <div class="start-screen__panel">
-      <p class="start-screen__eyebrow">Triple A</p>
-      <h1 class="start-screen__title">Sistema de cotizaciones</h1>
-      <p class="start-screen__text">
-        Inicia desde esta portada y luego entra al panel principal.
-      </p>
-      <form class="start-screen__form" id="start-login-form" autocomplete="on">
-        <label class="start-screen__field">
-          <span>Usuario</span>
-          <input id="start-auth-user" name="auth-user" type="text" autocomplete="username" placeholder="User" />
-        </label>
-        <label class="start-screen__field">
-          <span>Contraseña</span>
-          <input id="start-auth-pass" name="auth-pass" type="password" autocomplete="current-password"
-            placeholder="Password" />
-        </label>
+      <div class="start-screen__logo" aria-hidden="true">
+        <span class="start-screen__logo-mark">A</span>
+      </div>
+
+      <header class="start-screen__header">
+        <p class="start-screen__eyebrow">Triple A &middot; Plataforma empresarial</p>
+        <h1 class="start-screen__title">Sistema de<br>cotizaciones</h1>
+        <p class="start-screen__text">Accede con tus credenciales para gestionar cotizaciones, contratos y trabajadores.</p>
+      </header>
+
+      <form class="start-screen__form" id="start-login-form" autocomplete="on" novalidate>
+        <div class="start-screen__field" id="field-user">
+          <label class="start-screen__label" for="start-auth-user">
+            <svg class="start-screen__field-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M2.5 17c0-3.314 3.358-6 7.5-6s7.5 2.686 7.5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Usuario
+          </label>
+          <div class="start-screen__input-wrap">
+            <input
+              id="start-auth-user"
+              name="auth-user"
+              type="text"
+              autocomplete="username"
+              placeholder="tu.usuario"
+              spellcheck="false"
+              autocapitalize="none"
+            />
+            <span class="start-screen__field-status" aria-hidden="true"></span>
+          </div>
+          <p class="start-screen__field-error" id="error-user" role="alert" aria-live="polite"></p>
+        </div>
+
+        <div class="start-screen__field" id="field-pass">
+          <label class="start-screen__label" for="start-auth-pass">
+            <svg class="start-screen__field-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="3.5" y="8.5" width="13" height="9" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6.5 8.5V6a3.5 3.5 0 0 1 7 0v2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="10" cy="13" r="1.25" fill="currentColor"/>
+            </svg>
+            Contrase&ntilde;a
+          </label>
+          <div class="start-screen__input-wrap">
+            <input
+              id="start-auth-pass"
+              name="auth-pass"
+              type="password"
+              autocomplete="current-password"
+              placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+            />
+            <button
+              class="start-screen__toggle-pass"
+              type="button"
+              aria-label="Mostrar u ocultar contrase&ntilde;a"
+              tabindex="-1"
+              id="btn-toggle-pass"
+            >
+              <svg class="icon-eye" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M1.5 10S4.5 4 10 4s8.5 6 8.5 6-3 6-8.5 6S1.5 10 1.5 10Z" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 20 20" fill="none" aria-hidden="true" style="display:none">
+                <path d="M3 3l14 14M8.46 8.52A2.5 2.5 0 0 0 12.5 12.5M6 5.4C3.6 6.9 1.5 10 1.5 10S4.5 16 10 16c1.6 0 3-.4 4.2-1.1M10.5 4.05C10.33 4.02 10.17 4 10 4c-5.5 0-8.5 6-8.5 6s.6 1.1 1.7 2.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <p class="start-screen__field-error" id="error-pass" role="alert" aria-live="polite"></p>
+        </div>
+
+        <div class="start-screen__form-error" id="form-error" role="alert" aria-live="assertive" hidden>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 6v5M10 14h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span id="form-error-text"></span>
+        </div>
+
+        <button class="start-screen__submit" type="submit" id="start-submit-btn">
+          <span class="start-screen__submit-label">Entrar al sistema</span>
+          <span class="start-screen__submit-spinner" aria-hidden="true" hidden>
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.5" stroke-dasharray="28 56" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <svg class="start-screen__submit-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </form>
-      <button class="btn btn--primary" type="button" data-action="start-app">Entrar al sistema</button>
+
+      <footer class="start-screen__footer">
+        <span>Triple A</span>
+        <span class="start-screen__footer-sep">&middot;</span>
+        <span>Gesti&oacute;n empresarial</span>
+        <span class="start-screen__footer-sep">&middot;</span>
+        <span id="start-screen-year"></span>
+      </footer>
     </div>
   </section>
 
