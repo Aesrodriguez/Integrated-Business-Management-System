@@ -32,12 +32,12 @@
         <label class="start-screen__field">
           <span>Usuario</span>
           <input id="start-auth-user" name="auth-user" type="text" autocomplete="username"
-            placeholder="BASIC_AUTH_USER" />
+            placeholder="User" />
         </label>
         <label class="start-screen__field">
           <span>Contraseña</span>
           <input id="start-auth-pass" name="auth-pass" type="password" autocomplete="current-password"
-            placeholder="BASIC_AUTH_PASS" />
+            placeholder="Password" />
         </label>
       </form>
       <button class="btn btn--primary" type="button" data-action="start-app">Entrar al sistema</button>
@@ -57,21 +57,26 @@
       <nav class="nav nav--folders" id="nav-main">
         <section class="folder">
           <p class="folder__title">General</p>
-          <button class="nav__item is-active" data-view="dashboard" type="button">Dashboard</button>
+          <button class="nav__item is-active" data-view="dashboard" data-route="/dashboard" type="button">Dashboard</button>
         </section>
 
         <section class="folder">
           <p class="folder__title">Cotizaciones</p>
-          <button class="nav__item" data-view="nueva" type="button">Nueva cotización</button>
-          <button class="nav__item" data-view="lista" type="button">Listado</button>
+          <button class="nav__item" data-view="lista" data-route="/cotizaciones" type="button">Listado</button>
+          <button class="nav__item" data-view="nueva" data-route="/cotizaciones/nueva" type="button">Nueva cotización</button>
         </section>
 
         <section class="folder">
           <p class="folder__title">Maestros</p>
-          <button class="nav__item" data-view="clientes" type="button">Clientes</button>
-          <button class="nav__item" data-view="items" type="button">Catálogo</button>
-          <button class="nav__item" data-view="trabajadores" type="button">Trabajadores</button>
-          <button class="nav__item" data-view="contratos" type="button">Contratos</button>
+          <button class="nav__item" data-view="clientes" data-route="/clientes" type="button">Clientes</button>
+          <button class="nav__item" data-view="items" data-route="/catalogo" type="button">Catálogo</button>
+          <button class="nav__item" data-view="trabajadores" data-route="/trabajadores" type="button">Trabajadores</button>
+          <button class="nav__item" data-view="contratos" data-route="/contratos" type="button">Contratos</button>
+        </section>
+
+        <section class="folder">
+          <p class="folder__title">Configuración</p>
+          <button class="nav__item" data-view="tema" data-route="/configuracion/tema" type="button">Tema</button>
         </section>
       </nav>
 
@@ -100,13 +105,14 @@
       </section>
 
       <section class="workspace-tabs" id="workspace-tabs" aria-label="Ventanas del sistema">
-        <button class="workspace-tab is-active" type="button" data-view="dashboard">Dashboard</button>
-        <button class="workspace-tab" type="button" data-view="nueva">Nueva</button>
-        <button class="workspace-tab" type="button" data-view="lista">Cotizaciones</button>
-        <button class="workspace-tab" type="button" data-view="clientes">Clientes</button>
-        <button class="workspace-tab" type="button" data-view="items">Catálogo</button>
-        <button class="workspace-tab" type="button" data-view="trabajadores">Trabajadores</button>
-        <button class="workspace-tab" type="button" data-view="contratos">Contratos</button>
+        <button class="workspace-tab is-active" type="button" data-view="dashboard" data-route="/dashboard">Dashboard</button>
+        <button class="workspace-tab" type="button" data-view="lista" data-route="/cotizaciones">Cotizaciones</button>
+        <button class="workspace-tab" type="button" data-view="nueva" data-route="/cotizaciones/nueva">Nueva</button>
+        <button class="workspace-tab" type="button" data-view="clientes" data-route="/clientes">Clientes</button>
+        <button class="workspace-tab" type="button" data-view="items" data-route="/catalogo">Catálogo</button>
+        <button class="workspace-tab" type="button" data-view="trabajadores" data-route="/trabajadores">Trabajadores</button>
+        <button class="workspace-tab" type="button" data-view="contratos" data-route="/contratos">Contratos</button>
+        <button class="workspace-tab" type="button" data-view="tema" data-route="/configuracion/tema">Tema</button>
       </section>
 
       <section class="view is-active" data-view-panel="dashboard">
@@ -180,6 +186,24 @@
             <h2>Contratos</h2><span class="card__hint">REST-ready</span>
           </header>
           <div id="contracts-view"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="tema">
+        <article class="card">
+          <header class="card__header">
+            <h2>Configuración de tema</h2><span class="card__hint">Preferencias del usuario</span>
+          </header>
+          <div id="theme-view"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view-panel="not-found">
+        <article class="card">
+          <header class="card__header">
+            <h2>Página no encontrada</h2><span class="card__hint">Error 404</span>
+          </header>
+          <div id="not-found-view"></div>
         </article>
       </section>
     </main>

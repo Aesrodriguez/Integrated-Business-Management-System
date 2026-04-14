@@ -16,7 +16,9 @@
       clientes: 'Clientes',
       items: 'Catálogo',
       trabajadores: 'Trabajadores',
-      contratos: 'Contratos'
+      contratos: 'Contratos',
+      tema: 'Configuración de tema',
+      'not-found': 'Página no encontrada'
     },
     useAppsScriptRuntime: function () {
       return !!(global.google && google.script && google.script.run);
