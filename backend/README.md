@@ -56,6 +56,8 @@ Para el backend desplegado en Render, conviene definir estas variables:
 
 Si usas `BASIC_AUTH_PASS` solo debe ser temporal durante la migración.
 
+No subas archivos `.env` al repositorio. Mantén secretos solo en Environment Variables de Render y usa `.env` únicamente para desarrollo local.
+
 ## Pruebas locales
 
 - Levanta el backend con `npm run dev`.
