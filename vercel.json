@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/proxy",
+      "destination": "/api/proxy.js"
+    },
+    {
+      "source": "/api/runtime-config.js",
+      "destination": "/api/runtime-config.js"
+    },
+    {
+      "source": "/frontend/refactor/js/(.*)",
+      "destination": "/frontend/refactor/js/$1"
+    },
+    {
+      "source": "/frontend/refactor/styles.css",
+      "destination": "/frontend/refactor/styles.css"
+    },
+    {
+      "source": "/frontend/refactor/(.*\\.[a-z]{2,4})",
+      "destination": "/frontend/refactor/$1"
+    },
+    {
+      "source": "/frontend/refactor/(.*)",
+      "destination": "/frontend/refactor/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/refactor/index.html"
+    }
+  ]
+}
