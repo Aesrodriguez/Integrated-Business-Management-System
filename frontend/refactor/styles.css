@@ -49,6 +49,38 @@ body {
 }
 button, input, select, textarea { font: inherit; }
 button { cursor: pointer; }
+.start-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.start-screen__panel {
+  width: min(680px, 100%);
+  padding: 38px;
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(124, 92, 255, 0.12), rgba(54, 211, 153, 0.08) 55%, rgba(255, 255, 255, 0.02));
+  box-shadow: var(--shadow);
+}
+.start-screen__eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+}
+.start-screen__title {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 1.05;
+}
+.start-screen__text {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  max-width: 52ch;
+}
 .app-shell { display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); min-height: 100vh; }
 .sidebar {
   position: sticky; top: 0; align-self: start; min-height: 100vh; padding: 22px; display: flex; flex-direction: column; gap: 20px;
@@ -122,4 +154,5 @@ button { cursor: pointer; }
   .btn { flex: 1 1 auto; }
   .sidebar { padding: 16px; }
   .card, .metric { border-radius: 18px; }
+  .start-screen__panel { padding: 28px 22px; }
 }

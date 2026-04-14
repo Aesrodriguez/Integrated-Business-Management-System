@@ -6,6 +6,7 @@
   var api = root.api;
   var ui = root.ui;
   var config = root.config;
+  var hasStarted = false;
 
   function readTheme() {
     try {
@@ -78,7 +79,9 @@
       var action = event.target.getAttribute('data-action');
       if (!action) return;
 
-      if (action === 'toggle-sidebar') {
+      if (action === 'start-app') {
+        startApp();
+      } else if (action === 'toggle-sidebar') {
         ui.toggleSidebar();
       } else if (action === 'toggle-theme') {
         toggleTheme();
@@ -86,6 +89,18 @@
         boot(true);
       }
     });
+  }
+
+  function startApp() {
+    if (hasStarted) return;
+    hasStarted = true;
+
+    var startScreen = document.getElementById('start-screen');
+    var appShell = document.getElementById('app-shell');
+    if (startScreen) startScreen.hidden = true;
+    if (appShell) appShell.hidden = false;
+
+    boot(false);
   }
 
   function restoreSidebar() {
@@ -123,6 +138,11 @@
     initTheme();
     restoreSidebar();
     ui.showView('dashboard');
-    boot(false);
+
+    var autoStart = false;
+    try {
+      autoStart = global.location && global.location.search.indexOf('autoStart=1') >= 0;
+    } catch (_error) { }
+    if (autoStart) startApp();
   });
 })(window);
