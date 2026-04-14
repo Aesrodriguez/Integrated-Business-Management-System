@@ -19,13 +19,13 @@
    */
   var ROUTES = [
     { path: "/cotizaciones/nueva", view: "nueva" },
-    { path: "/cotizaciones",       view: "lista" },
-    { path: "/clientes",           view: "clientes" },
-    { path: "/catalogo",           view: "items" },
-    { path: "/trabajadores",       view: "trabajadores" },
-    { path: "/contratos",          view: "contratos" },
+    { path: "/cotizaciones", view: "lista" },
+    { path: "/clientes", view: "clientes" },
+    { path: "/catalogo", view: "items" },
+    { path: "/trabajadores", view: "trabajadores" },
+    { path: "/contratos", view: "contratos" },
     { path: "/configuracion/tema", view: "tema" },
-    { path: "/dashboard",          view: "dashboard" },
+    { path: "/dashboard", view: "dashboard" },
   ];
 
   /** Vista que se muestra cuando ninguna ruta coincide (404). */
@@ -51,7 +51,9 @@
     // Fallback: usar el directorio del pathname actual
     var pathname = global.location.pathname;
     // Quita cualquier segmento de "vista" conocido al final
-    var allPaths = ROUTES.map(function (r) { return r.path; });
+    var allPaths = ROUTES.map(function (r) {
+      return r.path;
+    });
     for (var j = 0; j < allPaths.length; j++) {
       if (pathname.indexOf(allPaths[j]) >= 0) {
         return pathname.slice(0, pathname.indexOf(allPaths[j]));
@@ -130,7 +132,8 @@
     if (viewOrPath && viewOrPath[0] === "/") {
       view = resolveView(viewOrPath);
       // Reconstruir path canonico desde la vista resuelta para normalización
-      path = view !== NOT_FOUND_VIEW ? viewToPath(view) : (BASE_PATH + viewOrPath);
+      path =
+        view !== NOT_FOUND_VIEW ? viewToPath(view) : BASE_PATH + viewOrPath;
     } else {
       view = viewOrPath || DEFAULT_VIEW;
       path = viewToPath(view);
