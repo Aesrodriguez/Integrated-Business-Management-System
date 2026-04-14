@@ -52,9 +52,17 @@
   }
 
   function bindNavigation() {
-    document.getElementById('nav-main').addEventListener('click', function (event) {
+    document.addEventListener('click', function (event) {
+      var folderTitle = event.target.closest('.folder__title');
+      if (folderTitle) {
+        var folder = folderTitle.closest('.folder');
+        if (folder) folder.classList.toggle('is-collapsed');
+        return;
+      }
+
       var target = event.target.closest('[data-view]');
       if (!target) return;
+      if (!target.closest('#nav-main') && !target.closest('#workspace-tabs')) return;
       navigate(target.getAttribute('data-view'));
     });
   }
@@ -90,6 +98,14 @@
   }
 
   function bindActions() {
+    var startForm = document.getElementById('start-login-form');
+    if (startForm) {
+      startForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        startApp();
+      });
+    }
+
     document.addEventListener('click', function (event) {
       var action = event.target.getAttribute('data-action');
       if (!action) return;
@@ -143,7 +159,8 @@
         return true;
       }
       api.setBasicCredentials('', '');
-      return true;
+      ui.toast('Credenciales requeridas', 'Debes ingresar usuario y contraseña para entrar al sistema.', 'warn');
+      return false;
     }
 
     if (!user || !pass) {
@@ -156,6 +173,22 @@
     return true;
   }
 
+  function setStartButtonBusy(isBusy) {
+    var startBtn = document.querySelector('[data-action="start-app"]');
+    if (!startBtn) return;
+    startBtn.disabled = !!isBusy;
+    startBtn.textContent = isBusy ? 'Validando acceso...' : 'Entrar al sistema';
+  }
+
+  function validateCredentialsBeforeStart() {
+    return api.request('getTrabajadores', [{ soloResumen: true }], { ttlMs: 0 }).then(function () {
+      return true;
+    }).catch(function (error) {
+      var message = String(error && error.message ? error.message : 'No se pudo validar el acceso.');
+      throw new Error(message);
+    });
+  }
+
   function startApp() {
     if (hasStarted) return;
 
@@ -164,13 +197,23 @@
     }
 
     hasStarted = true;
+    setStartButtonBusy(true);
+    ui.setStatus('Validando credenciales...', 'info');
 
-    var startScreen = document.getElementById('start-screen');
-    var appShell = document.getElementById('app-shell');
-    if (startScreen) startScreen.hidden = true;
-    if (appShell) appShell.hidden = false;
+    validateCredentialsBeforeStart().then(function () {
+      var startScreen = document.getElementById('start-screen');
+      var appShell = document.getElementById('app-shell');
+      if (startScreen) startScreen.hidden = true;
+      if (appShell) appShell.hidden = false;
 
-    boot(false);
+      setStartButtonBusy(false);
+      boot(false);
+    }).catch(function (error) {
+      hasStarted = false;
+      setStartButtonBusy(false);
+      ui.setStatus('Acceso denegado', 'error');
+      ui.toast('Credenciales inválidas', error.message || 'Verifica usuario/contraseña y vuelve a intentar.', 'error');
+    });
   }
 
   function restoreSidebar() {

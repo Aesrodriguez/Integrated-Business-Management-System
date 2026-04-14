@@ -31,11 +31,13 @@
       <form class="start-screen__form" id="start-login-form" autocomplete="on">
         <label class="start-screen__field">
           <span>Usuario</span>
-          <input id="start-auth-user" name="auth-user" type="text" autocomplete="username" placeholder="BASIC_AUTH_USER" />
+          <input id="start-auth-user" name="auth-user" type="text" autocomplete="username"
+            placeholder="BASIC_AUTH_USER" />
         </label>
         <label class="start-screen__field">
           <span>Contraseña</span>
-          <input id="start-auth-pass" name="auth-pass" type="password" autocomplete="current-password" placeholder="BASIC_AUTH_PASS" />
+          <input id="start-auth-pass" name="auth-pass" type="password" autocomplete="current-password"
+            placeholder="BASIC_AUTH_PASS" />
         </label>
       </form>
       <button class="btn btn--primary" type="button" data-action="start-app">Entrar al sistema</button>
@@ -52,14 +54,25 @@
         </div>
       </div>
 
-      <nav class="nav" id="nav-main">
-        <button class="nav__item is-active" data-view="dashboard" type="button">Dashboard</button>
-        <button class="nav__item" data-view="nueva" type="button">Nueva cotización</button>
-        <button class="nav__item" data-view="lista" type="button">Cotizaciones</button>
-        <button class="nav__item" data-view="clientes" type="button">Clientes</button>
-        <button class="nav__item" data-view="items" type="button">Catálogo</button>
-        <button class="nav__item" data-view="trabajadores" type="button">Trabajadores</button>
-        <button class="nav__item" data-view="contratos" type="button">Contratos</button>
+      <nav class="nav nav--folders" id="nav-main">
+        <section class="folder">
+          <p class="folder__title">General</p>
+          <button class="nav__item is-active" data-view="dashboard" type="button">Dashboard</button>
+        </section>
+
+        <section class="folder">
+          <p class="folder__title">Cotizaciones</p>
+          <button class="nav__item" data-view="nueva" type="button">Nueva cotización</button>
+          <button class="nav__item" data-view="lista" type="button">Listado</button>
+        </section>
+
+        <section class="folder">
+          <p class="folder__title">Maestros</p>
+          <button class="nav__item" data-view="clientes" type="button">Clientes</button>
+          <button class="nav__item" data-view="items" type="button">Catálogo</button>
+          <button class="nav__item" data-view="trabajadores" type="button">Trabajadores</button>
+          <button class="nav__item" data-view="contratos" type="button">Contratos</button>
+        </section>
       </nav>
 
       <footer class="sidebar__footer">
@@ -84,6 +97,16 @@
 
       <section class="status-bar" id="status-bar" aria-live="polite">
         <span class="status-pill">Listo para conectar con Apps Script</span>
+      </section>
+
+      <section class="workspace-tabs" id="workspace-tabs" aria-label="Ventanas del sistema">
+        <button class="workspace-tab is-active" type="button" data-view="dashboard">Dashboard</button>
+        <button class="workspace-tab" type="button" data-view="nueva">Nueva</button>
+        <button class="workspace-tab" type="button" data-view="lista">Cotizaciones</button>
+        <button class="workspace-tab" type="button" data-view="clientes">Clientes</button>
+        <button class="workspace-tab" type="button" data-view="items">Catálogo</button>
+        <button class="workspace-tab" type="button" data-view="trabajadores">Trabajadores</button>
+        <button class="workspace-tab" type="button" data-view="contratos">Contratos</button>
       </section>
 
       <section class="view is-active" data-view-panel="dashboard">
