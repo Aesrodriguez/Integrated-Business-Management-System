@@ -7,6 +7,15 @@
   var ui = root.ui;
   var config = root.config;
   var hasStarted = false;
+  var bootLoaderTimer = null;
+
+  function cancelBootLoader() {
+    if (bootLoaderTimer) {
+      global.clearTimeout(bootLoaderTimer);
+      bootLoaderTimer = null;
+    }
+    ui.hideLoader();
+  }
 
   function readTheme() {
     try {
@@ -110,23 +119,26 @@
   }
 
   function boot(force) {
-    ui.showLoader('Preparando interfaz...');
+    bootLoaderTimer = global.setTimeout(function () {
+      ui.showLoader('Preparando interfaz...');
+    }, 450);
+
     if (!api || typeof api.loadInitialData !== 'function') {
-      ui.hideLoader();
+      cancelBootLoader();
       ui.setStatus('Inicialización incompleta del cliente', 'error');
       ui.toast('Error inicial', 'No se pudo inicializar la capa de API del frontend.', 'error');
       return;
     }
 
     api.loadInitialData(force).then(function (initial) {
-      ui.hideLoader();
+      cancelBootLoader();
       ui.setStatus('Datos iniciales cargados', 'ok');
       if (initial && initial.ok === false) {
         ui.toast('Aviso', 'La respuesta inicial reportó una condición no óptima.', 'warn');
       }
       navigate(store.getState().view || 'dashboard');
     }).catch(function (error) {
-      ui.hideLoader();
+      cancelBootLoader();
       ui.setStatus('Arranque incompleto', 'error');
       ui.toast('Error inicial', error.message, 'error');
     });
