@@ -2,6 +2,10 @@
 
 API REST con arquitectura limpia para operar sobre Google Sheets.
 
+## Guía de migración
+
+Para documentar el proceso de refactorización y transferencia del sistema, revisa la [guía de migración y refactorización](../MIGRACION-REFACTORIZACION.md).
+
 ## Capas
 
 - `src/presentation`: rutas y controladores
@@ -38,6 +42,12 @@ Todos los endpoints de `/api/v1/*` usan autenticación Basic.
 - Define `CORS_ALLOWED_ORIGINS` con la URL del frontend desplegado en Vercel.
 - En producción se fuerza HTTPS y se limita el número de peticiones por IP.
 - Cada respuesta lleva `X-Request-Id` para auditoría y trazabilidad.
+
+## Pruebas locales
+
+- Levanta el backend con `npm run dev`.
+- Valida la API con herramientas como Postman o Insomnia antes de tocar producción.
+- Compara respuestas entre la versión previa y la refactorizada en los mismos casos de uso.
 
 ## Generar hash de contraseña
 

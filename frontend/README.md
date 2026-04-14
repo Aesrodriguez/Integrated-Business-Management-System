@@ -4,12 +4,17 @@ Esta carpeta contiene:
 
 - `refactor/`: nueva estructura modular para la interfaz.
 
+## Guía de migración
+
+La descripción completa del proceso de traslado de vistas, validación local, seguridad y escalabilidad está en la [guía de migración y refactorización](../MIGRACION-REFACTORIZACION.md).
+
 ## Objetivos
 
 - separación por capas de UI, estado y acceso a datos
 - estilos con variables CSS y componentes reutilizables
 - carga diferida de datos para reducir peticiones innecesarias
 - soporte responsive desde el inicio
+- migración incremental para convivir con la versión anterior mientras se valida cada pantalla
 
 ## Nueva estructura
 
