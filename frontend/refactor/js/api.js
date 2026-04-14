@@ -150,7 +150,7 @@
 
   function request(method, args, options) {
     var key = method + ':' + JSON.stringify(args || []);
-    var ttl = (options && options.ttlMs) || config.requestTtlMs;
+    var ttl = (options && Object.prototype.hasOwnProperty.call(options, 'ttlMs')) ? options.ttlMs : config.requestTtlMs;
     var now = Date.now();
 
     if (cache[key] && cache[key].expiresAt > now) {
@@ -217,10 +217,12 @@
   }
 
   function loadViewData(view) {
+    if (view === 'dashboard') return loadDashboardData();
     if (view === 'items') return request('getItems', []).then(function (value) { store.mergeCache('items', value); return value; });
     if (view === 'trabajadores') return request('getTrabajadores', [{ soloResumen: false }]).then(function (value) { store.mergeCache('workers', value); return value; });
     if (view === 'contratos') return request('getDashboardContratos', []).then(function (value) { store.mergeCache('contracts', value); return value; });
     if (view === 'lista') return request('getCotizaciones', [{}]).then(function (value) { store.mergeCache('cotizaciones', value); return value; });
+    if (view === 'clientes') return request('getTrabajadores', [{ soloResumen: true }]);
     return Promise.resolve(null);
   }
 

@@ -75,20 +75,30 @@
       if (view === 'dashboard') {
         ui.renderDashboard(data || {});
       } else if (view === 'lista') {
-        var listView = document.getElementById('list-view');
-        if (listView) listView.innerHTML = ui.renderEmptyState('Vista de cotizaciones lista para enlazar.');
+        ui.renderViewCollection('list-view', data, {
+          preferredColumns: ['id', 'codigo', 'estado', 'cliente', 'fecha'],
+          emptyMessage: 'No hay cotizaciones disponibles en este entorno.'
+        });
       } else if (view === 'clientes') {
-        var clientsView = document.getElementById('clients-view');
-        if (clientsView) clientsView.innerHTML = ui.renderEmptyState('Vista de clientes lista para enlazar.');
+        ui.renderViewCollection('clients-view', data, {
+          preferredColumns: ['id', 'codigo', 'nombre', 'telefono', 'email'],
+          emptyMessage: 'No hay clientes disponibles en este entorno.'
+        });
       } else if (view === 'items') {
-        var catalogView = document.getElementById('catalog-view');
-        if (catalogView) catalogView.innerHTML = ui.renderEmptyState('Vista de catálogo lista para enlazar.');
+        ui.renderViewCollection('catalog-view', data, {
+          preferredColumns: ['id', 'codigo', 'nombre', 'categoria', 'precio'],
+          emptyMessage: 'No hay items de catálogo disponibles en este entorno.'
+        });
       } else if (view === 'trabajadores') {
-        var workersView = document.getElementById('workers-view');
-        if (workersView) workersView.innerHTML = ui.renderEmptyState('Vista de trabajadores lista para enlazar.');
+        ui.renderViewCollection('workers-view', data, {
+          preferredColumns: ['id', 'codigo', 'nombre', 'cargo', 'telefono', 'email'],
+          emptyMessage: 'No hay trabajadores disponibles en este entorno.'
+        });
       } else if (view === 'contratos') {
-        var contractsView = document.getElementById('contracts-view');
-        if (contractsView) contractsView.innerHTML = ui.renderEmptyState('Vista de contratos lista para enlazar.');
+        ui.renderViewCollection('contracts-view', data, {
+          preferredColumns: ['id', 'codigo', 'cliente', 'estado', 'saldo', 'fecha'],
+          emptyMessage: 'No hay contratos disponibles en este entorno.'
+        });
       }
       return data;
     }).catch(function (error) {
