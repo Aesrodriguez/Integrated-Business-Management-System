@@ -56,15 +56,11 @@
   }
 
   function showLoader(message) {
-    var loader = document.getElementById('loader');
-    var text = document.getElementById('loader-text');
-    if (text) text.textContent = message || 'Cargando...';
-    if (loader) loader.hidden = false;
+    void message;
   }
 
   function hideLoader() {
-    var loader = document.getElementById('loader');
-    if (loader) loader.hidden = true;
+    return;
   }
 
   function showView(view) {
@@ -203,15 +199,11 @@
   }
 
   function showLoader(message) {
-    var loader = document.getElementById('loader');
-    var text = document.getElementById('loader-text');
-    if (text) text.textContent = message || 'Cargando...';
-    if (loader) loader.hidden = false;
+    void message;
   }
 
   function hideLoader() {
-    var loader = document.getElementById('loader');
-    if (loader) loader.hidden = true;
+    return;
   }
 
   function showView(view) {
