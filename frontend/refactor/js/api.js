@@ -39,11 +39,12 @@
   }
 
   function callRest(method, payload) {
-    if (!global.TRIPLEA_API_BASE_URL) {
-      return Promise.reject(new Error('API REST no configurada'));
+    var baseUrl = config.getApiBaseUrl();
+    if (!baseUrl) {
+      return Promise.reject(new Error('API REST no configurada. Define API_URL o TRIPLEA_API_BASE_URL.'));
     }
 
-    var url = global.TRIPLEA_API_BASE_URL.replace(/\/$/, '') + '/api/v1/' + method;
+    var url = baseUrl.replace(/\/$/, '') + '/api/v1/' + method;
     return fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

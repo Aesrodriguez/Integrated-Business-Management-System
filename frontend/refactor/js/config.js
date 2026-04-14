@@ -21,8 +21,11 @@
     useAppsScriptRuntime: function () {
       return !!(global.google && google.script && google.script.run);
     },
+    getApiBaseUrl: function () {
+      return global.API_URL || global.TRIPLEA_API_BASE_URL || '';
+    },
     getBackendMode: function () {
-      return global.TRIPLEA_API_BASE_URL ? 'rest' : 'apps-script';
+      return root.config.getApiBaseUrl() ? 'rest' : 'apps-script';
     }
   };
 })(window);

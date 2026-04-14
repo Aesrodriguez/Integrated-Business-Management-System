@@ -8,6 +8,11 @@ Esta carpeta contiene:
 
 La descripción completa del proceso de traslado de vistas, validación local, seguridad y escalabilidad está en la [guía de migración y refactorización](../MIGRACION-REFACTORIZACION.md).
 
+## Configuración en Vercel
+
+- Define `API_URL` con la URL pública de Render.
+- `TRIPLEA_API_BASE_URL` sigue soportada como alias, pero `API_URL` es el nombre recomendado.
+
 ## Objetivos
 
 - separación por capas de UI, estado y acceso a datos
