@@ -8,11 +8,16 @@
   var config = root.config;
   var hasStarted = false;
   var bootLoaderTimer = null;
+  var bootFailSafeTimer = null;
 
   function cancelBootLoader() {
     if (bootLoaderTimer) {
       global.clearTimeout(bootLoaderTimer);
       bootLoaderTimer = null;
+    }
+    if (bootFailSafeTimer) {
+      global.clearTimeout(bootFailSafeTimer);
+      bootFailSafeTimer = null;
     }
     ui.hideLoader();
   }
@@ -122,6 +127,12 @@
     bootLoaderTimer = global.setTimeout(function () {
       ui.showLoader('Preparando interfaz...');
     }, 450);
+
+    bootFailSafeTimer = global.setTimeout(function () {
+      cancelBootLoader();
+      ui.setStatus('Tiempo de espera agotado. Puedes reintentar.', 'warn');
+      ui.toast('Aviso', 'La carga tomó demasiado tiempo. Presiona Actualizar para reintentar.', 'warn');
+    }, 12000);
 
     if (!api || typeof api.loadInitialData !== 'function') {
       cancelBootLoader();

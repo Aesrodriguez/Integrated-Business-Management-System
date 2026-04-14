@@ -17,7 +17,21 @@
 
   function fetchWithTimeout(url, request, timeoutMs) {
     if (typeof global.AbortController !== 'function') {
-      return fetch(url, request);
+      return new Promise(function (resolve, reject) {
+        var timer = global.setTimeout(function () {
+          reject(buildTimeoutError(timeoutMs));
+        }, timeoutMs);
+
+        fetch(url, request)
+          .then(function (response) {
+            global.clearTimeout(timer);
+            resolve(response);
+          })
+          .catch(function (error) {
+            global.clearTimeout(timer);
+            reject(error);
+          });
+      });
     }
 
     var controller = new AbortController();
