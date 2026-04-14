@@ -18,6 +18,7 @@
    * Orden importa: rutas más específicas primero.
    */
   var ROUTES = [
+    { path: "/app-shell", view: "dashboard" },
     { path: "/cotizaciones/nueva", view: "nueva" },
     { path: "/cotizaciones", view: "lista" },
     { path: "/clientes", view: "clientes" },

@@ -3,6 +3,7 @@
   var root = w.TripleAFrontend = w.TripleAFrontend || {};
   var ui = root.ui;
   var routes = {
+    '/app-shell': 'dashboard',
     '/dashboard': 'dashboard',
     '/trabajadores': 'trabajadores',
     '/cotizaciones': 'lista',
