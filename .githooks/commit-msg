@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+message_file="$1"
+message="$(head -n 1 "$message_file" | tr -d '\r')"
+
+# Formato: tipo(scope opcional): mensaje descriptivo
+pattern='^(feat|fix|docs|refactor|chore|test|perf|build|ci|revert)(\([a-z0-9._/-]+\))?: .{12,72}$'
+
+if ! printf '%s' "$message" | grep -Eq "$pattern"; then
+  echo "Mensaje de commit invalido."
+  echo "Usa formato: tipo(scope): descripcion clara"
+  echo "Ejemplo: fix(frontend): avoid 401 by proxying api calls"
+  exit 1
+fi
+
+# Bloquea mensajes demasiado vagos
+if printf '%s' "$message" | grep -Eiq '^(feat|fix|docs|refactor|chore|test|perf|build|ci|revert)(\([a-z0-9._/-]+\))?: (update|changes|misc|wip|tmp|arreglos|ajustes)$'; then
+  echo "Mensaje demasiado generico. Explica que cambio y por que."
+  exit 1
+fi
+
+exit 0

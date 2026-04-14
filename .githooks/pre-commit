@@ -1,0 +1,43 @@
+#!/bin/sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+staged_files="$(git diff --cached --name-only --diff-filter=ACMR)"
+if [ -z "$staged_files" ]; then
+  echo "No hay archivos en staging para validar."
+  exit 1
+fi
+
+failed=0
+
+for file in $staged_files; do
+  if [ ! -f "$file" ]; then
+    continue
+  fi
+
+  case "$file" in
+    *.js|*.cjs|*.mjs)
+      if ! node --check "$file" >/dev/null 2>&1; then
+        echo "Error de sintaxis JS en: $file"
+        failed=1
+      fi
+      ;;
+    *.json)
+      if ! node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'))" "$file" >/dev/null 2>&1; then
+        echo "JSON invalido en: $file"
+        failed=1
+      fi
+      ;;
+    *)
+      ;;
+  esac
+done
+
+if [ "$failed" -ne 0 ]; then
+  echo "Validacion pre-commit fallida. Commit cancelado."
+  exit 1
+fi
+
+exit 0
