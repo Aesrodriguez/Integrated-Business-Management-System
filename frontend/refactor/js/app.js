@@ -96,6 +96,13 @@
 
   function boot(force) {
     ui.showLoader('Preparando interfaz...');
+    if (!api || typeof api.loadInitialData !== 'function') {
+      ui.hideLoader();
+      ui.setStatus('Inicialización incompleta del cliente', 'error');
+      ui.toast('Error inicial', 'No se pudo inicializar la capa de API del frontend.', 'error');
+      return;
+    }
+
     api.loadInitialData(force).then(function (initial) {
       ui.hideLoader();
       ui.setStatus('Datos iniciales cargados', 'ok');
