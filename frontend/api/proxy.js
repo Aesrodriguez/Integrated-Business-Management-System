@@ -22,12 +22,22 @@ module.exports = async function handler(req, res) {
   }
 
   var method = body && body.method;
+  var endpoint = body && body.endpoint;
+  var httpMethod = String((body && body.httpMethod) || 'POST').toUpperCase();
   var payload = (body && body.payload) || {};
-  if (!method || !/^[a-zA-Z0-9_]+$/.test(method)) {
+  if (httpMethod !== 'GET' && httpMethod !== 'POST' && httpMethod !== 'PUT' && httpMethod !== 'DELETE') {
+    return res.status(400).json({ ok: false, error: 'httpMethod inválido' });
+  }
+
+  if (endpoint && !/^\/api\/v1\//.test(endpoint)) {
+    return res.status(400).json({ ok: false, error: 'endpoint inválido' });
+  }
+
+  if (!endpoint && (!method || !/^[a-zA-Z0-9_]+$/.test(method))) {
     return res.status(400).json({ ok: false, error: 'Método inválido' });
   }
 
-  var url = baseUrl.replace(/\/$/, '') + '/api/v1/' + method;
+  var url = endpoint ? (baseUrl.replace(/\/$/, '') + endpoint) : (baseUrl.replace(/\/$/, '') + '/api/v1/' + method);
   var headers = { 'Content-Type': 'application/json' };
 
   var clientBasicAuth = String(req.headers['x-basic-auth'] || '').trim();
@@ -43,9 +53,9 @@ module.exports = async function handler(req, res) {
 
   try {
     var upstream = await fetch(url, {
-      method: 'POST',
+      method: httpMethod,
       headers: headers,
-      body: JSON.stringify(payload)
+      body: httpMethod === 'GET' ? undefined : JSON.stringify(payload)
     });
 
     var raw = await upstream.text();

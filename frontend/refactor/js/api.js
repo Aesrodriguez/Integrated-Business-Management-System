@@ -86,28 +86,65 @@
       headers['X-Basic-Auth'] = runtimeBasicAuthHeader;
     }
 
-    var request = {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify({
-        method: method,
-        payload: payload || {}
-      })
-    };
-
-    return fetchWithTimeout(url, request, config.requestTimeoutMs || 15000).then(function (response) {
-      return response.json().catch(function () { return null; }).then(function (json) {
-        if (!response.ok) {
-          var errorMessage = (json && (json.error || json.message)) ? (json.error || json.message) : ('HTTP ' + response.status);
-          throw new Error(errorMessage);
+    function callProxy(body) {
+      return fetchWithTimeout(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body)
+      }, config.requestTimeoutMs || 15000).then(function (response) {
+        return response.json().catch(function () { return null; }).then(function (json) {
+          if (!response.ok) {
+            var errorMessage = (json && (json.error || json.message)) ? (json.error || json.message) : ('HTTP ' + response.status);
+            throw new Error(errorMessage);
+          }
+          return json;
+        });
+      }).then(function (result) {
+        if (result && result.ok && Object.prototype.hasOwnProperty.call(result, 'data')) {
+          return result.data;
         }
-        return json;
+        return result;
       });
-    }).then(function (result) {
-      if (result && result.ok && Object.prototype.hasOwnProperty.call(result, 'data')) {
-        return result.data;
-      }
-      return result;
+    }
+
+    function buildInitialFromWorkers(workers) {
+      return {
+        ok: true,
+        cotizaciones: [],
+        contratos: { ok: true, contratos: [] },
+        trabajadores: Array.isArray(workers) ? workers : []
+      };
+    }
+
+    if (method === 'getTrabajadores') {
+      return callProxy({
+        endpoint: '/api/v1/trabajadores',
+        httpMethod: 'GET'
+      });
+    }
+
+    if (method === 'getDatosInicialesRapido' || method === 'getDatosIniciales') {
+      return callProxy({
+        endpoint: '/api/v1/trabajadores',
+        httpMethod: 'GET'
+      }).then(buildInitialFromWorkers);
+    }
+
+    if (method === 'getCotizaciones') {
+      return Promise.resolve([]);
+    }
+
+    if (method === 'getDashboardContratos') {
+      return Promise.resolve({ ok: true, contratos: [] });
+    }
+
+    if (method === 'getItems') {
+      return Promise.resolve([]);
+    }
+
+    return callProxy({
+      method: method,
+      payload: payload || {}
     });
   }
 
